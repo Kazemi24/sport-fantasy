@@ -1,3 +1,3 @@
 export const FixturesTable = () => {
-  return <div>FixturesTable</div>;
+  return <div>Hello</div>;
 };
