@@ -1,53 +1,54 @@
-export const Navbar = () => {
+// Navbar.tsx
+import { Link } from "@tanstack/react-router";
+import React from "react";
+
+export const Navbar: React.FC = () => {
   return (
     <nav className="bg-blue-600 fixed top-0 w-full shadow-md z-50">
       <div className="container mx-auto px-4 py-3 flex items-center">
-        {/* Logo aligned to the left */}
-        <a href="/" className="flex items-center text-white text-xl font-bold">
-          <img src="./sport.png" alt="Sport Logo" className="h-10 w-10 mr-3" />
+        <Link to="/" className="flex items-center text-white text-xl font-bold">
+          <img src="/sport.png" alt="Sport Logo" className="h-10 w-10 mr-3" />
           <span>Sport</span>
-        </a>
+        </Link>
 
-        {/* Spacer to push navigation and button to the right */}
         <div className="flex-1"></div>
 
-        {/* Navigation buttons aligned to the right */}
         <ul className="hidden md:flex space-x-8 text-white font-medium">
           <li>
-            <a
-              href="/"
-              className="hover:text-gray-300 transition-colors duration-200"
+            <Link
+              to="/"
+              className="hover:text-gray-300 transition-colors duration-200 cursor-pointer"
             >
               Home
-            </a>
+            </Link>
           </li>
           <li>
-            <a
-              href="/fixturetable"
-              className="hover:text-gray-300 transition-colors duration-200"
+            <Link
+              to="/fixturetable"
+              className="hover:text-gray-300 transition-colors duration-200 cursor-pointer"
             >
               Fixtures
-            </a>
+            </Link>
           </li>
           <li>
-            <a
-              href="/fantasy"
-              className="hover:text-gray-300 transition-colors duration-200"
+            <Link
+              to="/fantasy"
+              className="hover:text-gray-300 transition-colors duration-200 cursor-pointer"
             >
               Fantasy
-            </a>
+            </Link>
           </li>
           <li>
-            <a
-              href="/leaguetable"
-              className="hover:text-gray-300 transition-colors duration-200"
+            <Link
+              to="/leaguetable"
+              className="hover:text-gray-300 transition-colors duration-200 cursor-pointer"
             >
               League Table
-            </a>
+            </Link>
           </li>
         </ul>
 
-        {/* Mobile menu button aligned to the right */}
+        {/* Mobile Menu Button */}
         <button
           className="md:hidden text-white focus:outline-none"
           aria-label="Open Menu"
