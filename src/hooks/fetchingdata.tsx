@@ -2,7 +2,7 @@ import { API_KEY } from "../utils/api_key";
 
 const apiKey = API_KEY;
 
-export async function fetchFixtures(url: string) {
+export async function fetchData(url: string) {
   const response = await fetch(url, {
     headers: {
       "x-apisports-key": apiKey,

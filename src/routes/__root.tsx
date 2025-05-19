@@ -9,7 +9,6 @@ export const Route = createRootRoute({
       {/* Navbar */}
       <nav className="bg-blue-600 fixed top-0 w-full shadow-md z-50">
         <div className="container mx-auto px-4 py-3 flex items-center">
-          {/* Logo Link */}
           <Link
             to="/"
             className="flex items-center text-white text-xl font-bold"
@@ -19,8 +18,6 @@ export const Route = createRootRoute({
           </Link>
 
           <div className="flex-1"></div>
-
-          {/* Navigation Links */}
           <ul className="hidden md:flex space-x-8 text-white font-medium">
             <li>
               <Link
@@ -57,8 +54,6 @@ export const Route = createRootRoute({
           </ul>
         </div>
       </nav>
-
-      {/* Page Content */}
       <div className="mt-16">
         <Outlet />
         <TanStackRouterDevtools />
