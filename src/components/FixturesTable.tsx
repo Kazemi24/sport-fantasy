@@ -1,37 +1,29 @@
-// components/FixturesTable.tsx
+import { useQuery } from "@tanstack/react-query";
 import { fetchData } from "../hooks/fetchingdata";
-import { useState, useEffect } from "react";
 
 const url = "https://v3.football.api-sports.io/fixtures?league=39&season=2023";
 
-export const FixturesTable = () => {
-  interface Fixture {
-    teams: {
-      home: { name: string; logo: string };
-      away: { name: string; logo: string };
-    };
-    goals: {
-      home: number | null;
-      away: number | null;
-    };
+const fetchFixtures = async () => {
+  const data = await fetchData(url);
+  if (data?.response) {
+    return data.response.slice(0, 8);
   }
-  const [errorMessage, setErrorMessage] = useState("");
-  const [fixtures, setFixtures] = useState<Fixture[]>([]);
+  throw new Error("No fixtures data");
+};
 
-  useEffect(() => {
-    const fetchFixtures = async () => {
-      const data = await fetchData(url);
+export const FixturesTable = () => {
+  const {
+    data: fixtures,
+    error,
+    isLoading,
+  } = useQuery({
+    queryKey: ["fixtures", 39, 2023],
+    queryFn: fetchFixtures,
+    staleTime: 1000 * 60 * 10,
+  });
 
-      if (data && data.response) {
-        setFixtures(data.response.slice(0, 8));
-        console.log("Fetched Fixtures:", data.response);
-      } else {
-        setErrorMessage("No data recived");
-      }
-    };
-
-    fetchFixtures();
-  }, []);
+  if (isLoading) return <div>Loading fixtures...</div>;
+  if (error) return <div>Error loading fixtures</div>;
 
   return (
     <div className="p-4">
@@ -46,39 +38,48 @@ export const FixturesTable = () => {
           </tr>
         </thead>
         <tbody>
-          {fixtures.length > 0 ? (
-            fixtures.map((fixture, index) => (
-              <tr key={index} className="hover:bg-gray-100">
-                <td className="p-2 border-b ">
-                  <img
-                    src={fixture.teams.home.logo}
-                    alt={fixture.teams.home.name}
-                    className="h-6 w-6 rounded"
-                  />
-                  {fixture.teams.home.name}
-                </td>
-                <td className="p-2 border-b">
-                  <img
-                    src={fixture.teams.away.logo}
-                    alt={fixture.teams.away.name}
-                    className="h-6 w-6 rounded"
-                  />
-                  {fixture.teams.away.name}
-                </td>
-
-                <td className="p-2 border-b">{fixture.goals.home ?? "-"}</td>
-                <td className="p-2 border-b">{fixture.goals.away ?? "-"}</td>
-              </tr>
-            ))
+          {fixtures && fixtures.length > 0 ? (
+            fixtures.map(
+              (
+                fixture: {
+                  teams: {
+                    home: { logo: string; name: string };
+                    away: { logo: string; name: string };
+                  };
+                  goals: { home: number | null; away: number | null };
+                },
+                index: number
+              ) => (
+                <tr key={index} className="hover:bg-gray-100">
+                  <td className="p-2 border-b ">
+                    <img
+                      src={fixture.teams.home.logo}
+                      alt={fixture.teams.home.name}
+                      className="h-6 w-6 rounded"
+                    />
+                    {fixture.teams.home.name}
+                  </td>
+                  <td className="p-2 border-b">
+                    <img
+                      src={fixture.teams.away.logo}
+                      alt={fixture.teams.away.name}
+                      className="h-6 w-6 rounded"
+                    />
+                    {fixture.teams.away.name}
+                  </td>
+                  <td className="p-2 border-b text-center">
+                    {fixture.goals.home ?? "-"}
+                  </td>
+                  <td className="p-2 border-b text-center">
+                    {fixture.goals.away ?? "-"}
+                  </td>
+                </tr>
+              )
+            )
           ) : (
             <tr>
-              {errorMessage && (
-                <div className="form__error-message mt-3 text-red-600">
-                  Error: {errorMessage}
-                </div>
-              )}
-              <td colSpan={4} className="p-2 text-center">
-                Loading or no data available...
+              <td colSpan={4} className="p-2 text-center text-gray-500">
+                No fixtures available
               </td>
             </tr>
           )}

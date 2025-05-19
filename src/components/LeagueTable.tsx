@@ -19,7 +19,7 @@ export const LeagueTable = () => {
   } = useQuery({
     queryKey: ["standings", 39, 2023],
     queryFn: fetchStandings,
-    staleTime: 1000 * 60 * 10, // 10 minutes
+    staleTime: 1000 * 60 * 10,
   });
 
   if (isLoading) return <div>Loading standings...</div>;
