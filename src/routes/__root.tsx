@@ -1,12 +1,11 @@
-// routes/RootRoute.tsx
+import { useState } from "react";
 import { createRootRoute, Outlet } from "@tanstack/react-router";
 import { TanStackRouterDevtools } from "@tanstack/react-router-devtools";
 import { Link } from "@tanstack/react-router";
-
-export const Route = createRootRoute({
-  component: () => (
+const RootComponent = () => {
+  const [isOpen, setIsOpen] = useState(false);
+  return (
     <>
-      {/* Navbar */}
       <nav className="bg-blue-600 fixed top-0 w-full shadow-md z-50">
         <div className="container mx-auto px-4 py-3 flex items-center">
           <Link
@@ -18,7 +17,43 @@ export const Route = createRootRoute({
           </Link>
 
           <div className="flex-1"></div>
-          <ul className="hidden md:flex space-x-8 text-white font-medium">
+
+          {/* Hamburger button on mobile */}
+          <button
+            className="md:hidden text-white focus:outline-none"
+            onClick={() => setIsOpen(!isOpen)}
+          >
+            <svg
+              className="w-6 h-6"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              {isOpen ? (
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M6 18L18 6M6 6l12 12"
+                />
+              ) : (
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M4 6h16M4 12h16M4 18h16"
+                />
+              )}
+            </svg>
+          </button>
+
+          {/* Navigation links */}
+          <ul
+            className={`${
+              isOpen ? "flex flex-col space-y-2" : "hidden"
+            } md:flex md:flex-row md:space-x-8 text-white font-medium`}
+          >
             <li>
               <Link
                 to="/"
@@ -54,10 +89,14 @@ export const Route = createRootRoute({
           </ul>
         </div>
       </nav>
-      <div className="mt-16">
+      <div className="mt-40">
         <Outlet />
         <TanStackRouterDevtools />
       </div>
     </>
-  ),
+  );
+};
+
+export const Route = createRootRoute({
+  component: RootComponent,
 });
