@@ -21,6 +21,7 @@ const fetchPlayers = async () => {
       break;
     }
   }
+
   return allPlayers.slice(0, 50);
 };
 
@@ -67,7 +68,7 @@ export const Fantasy = () => {
       </h2>
       <FotballPitch
         selectedPlayers={selectedPlayers}
-        players={players ?? []} // default to empty array when loading
+        players={players ?? []}
         addPlayer={addPlayer}
         removePlayer={removePlayer}
       />
