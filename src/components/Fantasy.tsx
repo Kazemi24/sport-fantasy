@@ -21,7 +21,6 @@ const fetchPlayers = async () => {
       break;
     }
   }
-  console.log(allPlayers.slice(0, 50));
   return allPlayers.slice(0, 50);
 };
 
@@ -59,7 +58,6 @@ export const Fantasy = () => {
     );
   };
 
-  if (isLoading) return <div>Loading players...</div>;
   if (error) return <div>Error loading players</div>;
 
   return (
@@ -69,12 +67,14 @@ export const Fantasy = () => {
       </h2>
       <FotballPitch
         selectedPlayers={selectedPlayers}
-        players={players}
+        players={players ?? []} // default to empty array when loading
         addPlayer={addPlayer}
         removePlayer={removePlayer}
       />
+      {isLoading && (
+        <p className="text-center mt-4 text-gray-500">Loading players...</p>
+      )}
     </div>
   );
 };
-
 export default Fantasy;
